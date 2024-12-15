@@ -130,8 +130,7 @@ export async function checkPausedMedia(tabId: ID): Promise<boolean | null> {
       runAt: 'document_start',
       allFrames: true,
     })
-  } catch (err) {
-    Logs.err('Tabs.checkPausedMedia(): Cannot check paused media', err, tabId)
+  } catch {
     checkingPausedMedia.delete(tabId)
     return false
   }

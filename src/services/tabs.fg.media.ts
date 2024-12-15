@@ -117,6 +117,29 @@ export async function pauseTabMedia(id?: ID): Promise<void> {
   recheckPausedTabs()
 }
 
+const checkingPausedMedia = new Set<ID>()
+
+export async function checkPausedMedia(tabId: ID): Promise<boolean | null> {
+  if (checkingPausedMedia.has(tabId)) return null
+  checkingPausedMedia.add(tabId)
+
+  let results
+  try {
+    results = await browser.tabs.executeScript(tabId, {
+      file: '../injections/check-paused-media.js',
+      runAt: 'document_start',
+      allFrames: true,
+    })
+  } catch (err) {
+    Logs.err('Tabs.checkPausedMedia(): Cannot check paused media', err, tabId)
+    checkingPausedMedia.delete(tabId)
+    return false
+  }
+
+  checkingPausedMedia.delete(tabId)
+  return results.some(r => r)
+}
+
 export async function playTabMedia(id?: ID): Promise<void> {
   if (!Permissions.reactive.webData) {
     const result = await Permissions.request('<all_urls>')

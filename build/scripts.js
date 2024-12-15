@@ -311,6 +311,7 @@ async function main() {
       entryPoints: [
         'src/injections/play-media.ts',
         'src/injections/pause-media.ts',
+        'src/injections/check-paused-media.ts',
         'src/injections/group.ts',
         'src/injections/url.ts',
       ],

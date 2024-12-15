@@ -526,9 +526,12 @@ function onTabUpdated(tabId: ID, change: browser.tabs.ChangeInfo, nativeTab: Nat
       reloadTabFaviconDebounced(tab)
     }
     if (change.url && tab.mediaPaused) {
-      tab.mediaPaused = false
-      tab.reactive.mediaPaused = false
-      Sidebar.updateMediaStateOfPanelDebounced(100, tab.panelId, tab)
+      Tabs.checkPausedMedia(tabId).then(stillPaused => {
+        if (stillPaused === null || stillPaused) return
+        tab.mediaPaused = false
+        tab.reactive.mediaPaused = false
+        Sidebar.updateMediaStateOfPanelDebounced(100, tab.panelId, tab)
+      })
     }
   }
 
@@ -562,9 +565,12 @@ function onTabUpdated(tabId: ID, change: browser.tabs.ChangeInfo, nativeTab: Nat
 
     // Reset pause state
     if (tab.mediaPaused) {
-      tab.mediaPaused = false
-      tab.reactive.mediaPaused = false
-      Sidebar.updateMediaStateOfPanelDebounced(100, tab.panelId, tab)
+      Tabs.checkPausedMedia(tabId).then(stillPaused => {
+        if (stillPaused === null || stillPaused) return
+        tab.mediaPaused = false
+        tab.reactive.mediaPaused = false
+        Sidebar.updateMediaStateOfPanelDebounced(100, tab.panelId, tab)
+      })
     }
 
     // Re-color tab

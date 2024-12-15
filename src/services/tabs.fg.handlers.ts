@@ -1061,6 +1061,11 @@ function onTabRemoved(tabId: ID, info: browser.tabs.RemoveInfo, detached?: boole
     panel.reactive.updated = panel.updatedTabs.length > 0
   }
 
+  // Update media badges
+  if (tab.audible || tab.mediaPaused || tab.mutedInfo?.muted) {
+    Sidebar.updateMediaStateOfPanelDebounced(120, tab.panelId)
+  }
+
   // On removing the last tab
   if (!Tabs.removingTabs.length) {
     // Update parent tab state
@@ -1104,11 +1109,6 @@ function onTabRemoved(tabId: ID, info: browser.tabs.RemoveInfo, detached?: boole
 
     // Update filtered results
     if (Search.rawValue) Search.search()
-
-    // Update media badges
-    if (tab.audible || tab.mediaPaused || tab.mutedInfo?.muted) {
-      Sidebar.updateMediaStateOfPanelDebounced(100, tab.panelId)
-    }
   }
 
   // Update bookmarks marks

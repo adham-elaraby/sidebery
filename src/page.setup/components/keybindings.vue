@@ -41,6 +41,7 @@
     KeybindingField(:keybinding="Keybindings.reactive.byName.group_tabs")
     KeybindingField(:keybinding="Keybindings.reactive.byName.group_tabs_act")
     KeybindingField(:keybinding="Keybindings.reactive.byName.flatten_tabs")
+    KeybindingField(:keybinding="Keybindings.reactive.byName.rename_tab")
 
   section
     h2 {{translate('settings.kb_tabs_open')}}

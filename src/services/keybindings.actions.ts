@@ -261,6 +261,7 @@ function onCmd(name: string): void {
   else if (name === 'sort_panel_tabs_by_url_des') onKeySortTabs(SortBy.Url, -1, true, true)
   else if (name === 'sort_panel_tabs_by_time_asc') onKeySortTabs(SortBy.ATime, 1, true, true)
   else if (name === 'sort_panel_tabs_by_time_des') onKeySortTabs(SortBy.ATime, -1, true, true)
+  else if (name === 'rename_tab') onKeyRenameTab()
 }
 
 function onKeySortTabs(type: SortBy, dir = 0, tree?: boolean, panel?: boolean) {
@@ -1314,6 +1315,40 @@ function onKeySelChildTabs() {
   const childTabs = Tabs.getBranch(tab, false)
   Selection.selectTabs(childTabs.map(t => t.id))
 }
+
+function onKeyRenameTab(): void {
+  // no idea how to focus the input field
+  // it kinda works, but for some reason we have to click on the sidebar first with the mouse
+  const activeTab = Tabs.list.find(t => t.active);
+  if (!activeTab) return;
+
+  Sidebar.switchToPanel(activeTab.panelId);
+  Sidebar.goToActiveTabPanel();
+
+  Tabs.editTabTitle([activeTab.id]);
+}
+
+// }
+// async function onKeyRenameTab(): Promise<void> {
+//   const activeTab = Tabs.list.find(t => t.active);
+//   if (!activeTab) return;
+
+//   Sidebar.switchToPanel(activeTab.panelId);
+//   try {
+//     await Tabs.editTabTitle([activeTab.id]);
+
+//     // Additional fallback to ensure input is focused and selected
+//     await Utils.sleep(50); // Allow more time for DOM updates
+    
+//     const inputEl = document.querySelector(`#tab${activeTab.id} .custom-title-input`) as HTMLInputElement | null;
+//     if (inputEl) {
+//       inputEl.focus();
+//       inputEl.select();
+//     }
+//   } catch (error) {
+//     console.error('Error renaming tab:', error);
+//   }
+// }
 
 /**
  * Setup keybinding listeners

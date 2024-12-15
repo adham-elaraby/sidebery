@@ -65,6 +65,12 @@
       },
       "description": "__MSG_KbOpenSidebarPanel__"
     },
+    "rename_tab": {  
+      "suggested_key": {
+        "default": "Ctrl+Alt+R"
+      },
+      "description": "__MSG_KbRenameTab__"
+    },
     "next_panel": {
       "suggested_key": {
         "default": "Alt+Period"
